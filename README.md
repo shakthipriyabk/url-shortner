@@ -113,3 +113,5 @@ web/          controller, DTOs, error handling
 ```
 
 > **Note:** Postgres is exposed on host port **5433** (not 5432) to avoid clashing with a locally installed Postgres. The app's default DB URL matches this.
+
+> **Note:** Postgres is exposed on host port **5433** (not 5432) to avoid clashing with a locally installed Postgres. The app's default DB URL matches this.
