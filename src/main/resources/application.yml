@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: url-shortener
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://127.0.0.1:5433/shortener}
+    username: ${DB_USER:shortener}
+    password: ${DB_PASSWORD:shortener}
+  sql:
+    init:
+      mode: always        # runs schema.sql on startup (idempotent); swap for Flyway in a real deployment
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      # Short timeouts so a slow or dead Redis degrades to "DB only" instead of hanging requests.
+      timeout: 200ms
+      connect-timeout: 200ms
+
+shortener:
+  base-url: ${BASE_URL:http://localhost:8080}
+  cache:
+    ttl-minutes: 60
+    negative-ttl-seconds: 60
+  rate-limit:
+    shorten:            # creating links: strict
+      capacity: 10      # burst size
+      refill-per-second: 0.5
+    redirect:           # following links: lenient
+      capacity: 100
+      refill-per-second: 50
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics
